@@ -8,10 +8,13 @@ import {
       Button,
       Progress,
       useColorMode,
-
 } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { submitJob } from '../redux/slides/SessionSlice';
+import { AppDispatch } from '../redux/store/store';
 import axios from 'axios';
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Generate = () => {
 
@@ -19,31 +22,43 @@ const Generate = () => {
       const [loadingProgress, setLoadingProgress] = useState(0);
       const [url, setUrl] = useState('');
       const { colorMode } = useColorMode();
+      const dispatch = useDispatch<AppDispatch>();
+      const session = useSelector((state: any) => state.session);
+      const naviagate = useNavigate();
 
       const handleGenerate = async () => {
             setLoading(true);
+            await sendGenerateRequest();
             setTimeout(() => {
                   setLoading(false);
             }, 3000);
-            // await sendGenerateRequest();
       };
 
       const sendGenerateRequest = async () => {
-            const response = await axios.post('http://localhost:8080/api/generate', {
-                  url: url,
-            });
-
-            if (response.status !== 200) {
-                  console.log('Error generating blog post');
-                  setLoading(false);
-                  return;
-            } else {
-                  console.log('Blog post generated');
-                  setLoadingProgress(100);
-                  setLoading(false);
+            const req = {
+                  "userId": session.userId,
+                  "videoUrl": url
             }
-
+            dispatch(submitJob(req));
       };
+
+      useEffect(() => {
+            const fetchJobStatus = async () => {
+                  if (!session.jobId) return;
+                  const res = await axios.get(`http://video-publi-18ljnttgnyky9-1470409612.us-west-2.elb.amazonaws.com/getJob/${session.jobId}`);
+                  if (res.data.status === "SUCCEEDED") {
+                        naviagate(`/blog/${session.jobId}`);
+                  } else {
+                        setTimeout(() => {
+                              fetchJobStatus();
+                        }, 5000);
+                  }
+            }
+            fetchJobStatus();
+      }, [session.jobId, naviagate]);
+
+
+
 
       return (
             <Container maxW={'3xl'}>
