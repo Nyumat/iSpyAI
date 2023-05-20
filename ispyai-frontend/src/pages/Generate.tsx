@@ -16,22 +16,33 @@ import { useState } from 'react';
 const Generate = () => {
 
       const [loading, setLoading] = useState(false);
+      const [loadingProgress, setLoadingProgress] = useState(0);
       const [url, setUrl] = useState('');
       const { colorMode } = useColorMode();
 
       const handleGenerate = async () => {
             setLoading(true);
-            sendGenerateRequest();
             setTimeout(() => {
                   setLoading(false);
             }, 3000);
+            // await sendGenerateRequest();
       };
 
       const sendGenerateRequest = async () => {
             const response = await axios.post('http://localhost:8080/api/generate', {
                   url: url,
             });
-            console.log(response);
+
+            if (response.status !== 200) {
+                  console.log('Error generating blog post');
+                  setLoading(false);
+                  return;
+            } else {
+                  console.log('Blog post generated');
+                  setLoadingProgress(100);
+                  setLoading(false);
+            }
+
       };
 
       return (
@@ -45,10 +56,12 @@ const Generate = () => {
                               fontWeight={600}
                               fontSize={{ base: '2xl', sm: '4xl', md: '5xl' }}
                               lineHeight={'110%'}>
-                              Summarize your <br />
+                              Turn your <br />
                               <Text as={'span'} color={'green.400'}>
-                                    favorite videos.
+                                    favorite videos
                               </Text>
+                              <br />
+                              into blog posts.
                         </Heading>
 
                         <Heading
@@ -96,7 +109,7 @@ const Generate = () => {
                                                 lineHeight={'110%'}>
                                                 Generating...
                                           </Text>
-                                          <Progress size="xs" isIndeterminate />
+                                          <Progress size="lg" hasStripe isIndeterminate />
                                     </Stack>
                               </Box>
                         )}
