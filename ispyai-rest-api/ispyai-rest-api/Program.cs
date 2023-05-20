@@ -4,6 +4,7 @@ using Amazon.Batch.Model;
 using Amazon.Runtime;
 using Amazon.Runtime.CredentialManagement;
 using ispyai_rest_api.Models;
+using StackExchange.Redis;
 using KeyValuePair = Amazon.Batch.Model.KeyValuePair;
 
 namespace ispyai_rest_api;
@@ -58,12 +59,12 @@ public static class Program
         {
             try
             {
-                // create random 6 digit id
-                var randomId = new Random().Next(100000, 999999);
+                // create hash of videoUrl
+                var videoUrlHash = input.videoUrl.GetHashCode();
                 
                 var response = await batchClient.SubmitJobAsync(new SubmitJobRequest 
                 {
-                    JobName = $"VideoToBlogJob-{input.userId}-{randomId}",
+                    JobName = $"VideoToBlogJob-{input.userId}-{videoUrlHash}",
                     JobDefinition = "VideoToBlogJobDefinition:2",
                     JobQueue = "VideoToBlogJobQueue",
                     Tags = new Dictionary<string, string>
@@ -150,6 +151,39 @@ public static class Program
                     trace = e.StackTrace
                 });
             }
+        });
+
+        app.MapGet("/getAllKeyValuePairs", async () =>
+        {
+            var configuration = new ConfigurationOptions
+            {
+                EndPoints = { "redis-18674.c273.us-east-1-2.ec2.cloud.redislabs.com:18674" }, // Replace with your Redis host and port
+                Password = "MNSwDR1UOlq20ucYUhfoaoW5OSHIuEnY", // Replace with your Redis password
+                User = "default" // Replace with your Redis username if applicable
+            };
+
+            await using var redis = await ConnectionMultiplexer.ConnectAsync(configuration);
+
+            var keys = redis.GetServer(configuration.EndPoints[0]).Keys();
+
+            // convert keys to json
+            var json = new
+            {
+                keys = keys.Select(key => key.ToString())
+            };
+
+            return Results.Ok(json);
+
+            // print all keys
+            // foreach (var key in keys)
+            // {
+            //     Console.WriteLine(key);
+            // }
+            //     
+            // // foreach (var key in keys)
+            // // {
+            // //     var value = database.HashGet(key, "value");
+            // // }
         });
 
         app.Run();
