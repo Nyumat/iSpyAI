@@ -1,9 +1,15 @@
 from flask import Flask, request
 import os
 import openai
+import tiktoken # Used to count tokens
 
-# Used to count tokens
-import tiktoken
+def main():
+    print("Hello there")
+    # print env variables
+    print(f"env variable userId: {os.environ.get('userId')}")
+    print(f"env variable videoUrl: {os.environ.get('videoUrl')}")
+
+
 
 # Used to get transcripts for videos
 from transcripts import export_youtube_transcript
