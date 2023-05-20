@@ -10,7 +10,6 @@ def main():
     print(f"env variable videoUrl: {os.environ.get('videoUrl')}")
 
 
-
 # Used to get transcripts for videos
 from transcripts import export_youtube_transcript
 
@@ -51,6 +50,6 @@ def generate():
     return response.choices[0].text
 
 
-
 if __name__ == "__main__":
+    main()
     app.run(debug=DEBUG)
