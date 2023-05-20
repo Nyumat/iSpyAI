@@ -32,6 +32,7 @@ const Generate = () => {
             setTimeout(() => {
                   setLoading(false);
             }, 3000);
+            // await sendGenerateRequest();
       };
 
       const sendGenerateRequest = async () => {
