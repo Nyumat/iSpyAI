@@ -10,6 +10,22 @@ import {
       createIcon,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+
+const slideIn = {
+      hidden: {
+            opacity: 0,
+            x: -400,
+      },
+      visible: {
+            opacity: 1,
+            x: 0,
+            transition: {
+                  duration: 0.5,
+            },
+      },
+};
+
 
 export default function Landing() {
       const navigate = useNavigate();
@@ -21,7 +37,7 @@ export default function Landing() {
                               as={Box}
                               textAlign={'center'}
                               spacing={{ base: 8, md: 14 }}
-                              py={{ base: 20, md: 36 }}>
+                              py={{ base: 8, md: 16, lg: 16 }}>
                               <Heading
                                     fontWeight={600}
                                     fontSize={{ base: '2xl', sm: '4xl', md: '7xl' }}
@@ -32,8 +48,19 @@ export default function Landing() {
                                     </Text>
                               </Heading>
                               <Text color={'gray.500'} maxW={'3xl'} fontSize={{ base: 'md', lg: 'xl' }}>
-                                    Welcome to iSpyAI! We are a video summarization service that
-                                    allows you to summarize your favorite videos. We use the latest
+                                    <motion.p variants={slideIn} initial="hidden" animate="visible">
+                                          Welcome to iSpyAI!
+                                    </motion.p>
+                                    <br />  We are a <Text as={'span'} fontWeight={700}>
+                                          free
+                                    </Text>{' '}
+                                    service that
+                                    allows you to convert your favorite
+                                    <Text as={'span'} fontWeight={700}>
+                                          {' '}
+                                          YouTube videos into blog posts. {' '}
+                                    </Text>
+                                    We use the latest
                                     in AI technology to summarize your videos in a matter of
                                     seconds.
                               </Text>
