@@ -48,6 +48,12 @@ public static class Program
 
         app.UseHttpsRedirection();
 
+        // this endpoint is for health check only
+        app.MapGet("/", () =>
+        {
+            return Results.Ok("HEALTH OK");
+        });
+
         app.MapPost("/submitJob", async (JobInput input) =>
         {
             try
