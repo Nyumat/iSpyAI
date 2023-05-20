@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { submitJob } from '../redux/slides/SessionSlice';
+import { submitJob } from '../redux/slices/SessionSlice';
 import { AppDispatch } from '../redux/store/store';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
