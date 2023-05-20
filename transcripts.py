@@ -2,6 +2,7 @@ from youtube_transcript_api import YouTubeTranscriptApi
 from urllib.parse import urlparse, parse_qs
 import requests
 import json
+import config
   
 def export_youtube_transcript(url):
 
@@ -25,7 +26,7 @@ def get_video_title_channel(url):
     query_params = parse_qs(parsed_url.query)
     video_id = query_params.get("v")
 
-    api_key = 'AIzaSyDTwgNfLqBARq-Lq7hDU6uu75NRjDIpI9U'
+    api_key = config.YOUTUBE_API_KEY
     url = f'https://www.googleapis.com/youtube/v3/videos?id={video_id[0]}&key={api_key}&part=snippet'
 
     response = requests.get(url)
@@ -40,6 +41,9 @@ def get_video_title_channel(url):
 
 # Example usage
 # url = "https://www.youtube.com/watch?v=vzNZrdimAYs"
-# video_title = get_youtube_video_title(url)
+# video_title = get_video_title_channel(url)
 # video_text = export_youtube_transcript(url)
+
+# print(video_title)
+# print(video_text)
 
