@@ -10,14 +10,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.19",
     "@chakra-ui/react": "^2.6.1",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
+    "@nikolovlazar/chakra-ui-prose": "^1.2.1",
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.4.0",
+    "chakra-ui-markdown-renderer": "^4.1.0",
     "framer-motion": "^10.12.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-markdown": "^8.0.7",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.11.2",
     "redux-persist": "^6.0.0"
