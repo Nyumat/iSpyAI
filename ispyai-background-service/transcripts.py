@@ -37,7 +37,7 @@ def get_video_title_channel(url):
         channel_title = response_data['items'][0]['snippet']['channelTitle']
         return (channel_title, video_title)
 
-    return "Video not found"
+    return None
 
 # Example usage
 # url = "https://www.youtube.com/watch?v=vzNZrdimAYs"

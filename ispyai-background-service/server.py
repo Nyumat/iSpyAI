@@ -49,11 +49,11 @@ def generate():
     return response.choices[0].text
 
 
-# @app.route("/api/title-channel", methods=["GET"])
-# def titleChannel():
-#     url = "https://youtu.be/CDokUdux0rc" #request.json["url"]
-
-
+@app.route("/api/title-channel", methods=["GET"])
+def titleChannel():
+    url = "https://youtu.be/CDokUdux0rc" #request.json["url"]
+    (channel, title) = get_video_title_channel(url)
+    return (channel, title)
 
 
 if __name__ == "__main__":
