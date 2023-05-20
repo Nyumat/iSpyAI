@@ -123,10 +123,11 @@ TOKEN_LIMIT = 2000
 @app.route("/api/generate", methods=["POST"])
 def generate():
     if DEBUG:
-        print("Generating new blog for {} ...".format(request.json["url"]))
+        print("Generating new blog for `{}` ...".format(request.json["url"]))
     transcript = export_youtube_transcript(request.json["url"])
-    tokenizer = tiktoken.Tokenizer(tokenization_standard="gpt3")
-    token_count = len(tokenizer.tokenize(transcript))
+    tokenizer = tiktoken.encoding_for_model("gpt-3.5-turbo")
+    tokens = tokenizer.encode(transcript)
+    token_count = len(tokens)
     if DEBUG:
         print("-- Token count: {} / {}".format(token_count, TOKEN_LIMIT))
     if token_count > TOKEN_LIMIT:
