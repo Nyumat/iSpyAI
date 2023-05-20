@@ -5,6 +5,7 @@ import Generate from '../pages/Generate'
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react'
 import store, { persistor } from '../redux/store/store';
+import Blog from '../pages/Blog';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/generate" element={<Generate />} />
+            <Route path="/blog/:id" element={<Blog/>} />
           </Routes>
         </PersistGate>
       </Provider>

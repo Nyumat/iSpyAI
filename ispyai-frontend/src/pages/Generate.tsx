@@ -31,6 +31,7 @@ const Generate = () => {
             await sendGenerateRequest();
             setTimeout(() => {
                   setLoading(false);
+                  naviagate(`/blog/${session.jobId}`);
             }, 3000);
             // await sendGenerateRequest();
       };
@@ -153,17 +154,6 @@ const Generate = () => {
                               <Button variant={'link'} colorScheme={'blue'} size={'sm'} onClick={() => window.history.back()} py={4}>
                                     Go Back
                               </Button>
-
-                              <Box py={8}>
-                                    <Text
-                                          color={'gray.500'}
-                                          maxW={'3xl'}
-                                          fontSize={{ base: 'md', lg: 'xl' }}>
-                                          Once the blog post is generated, you will be automatically
-                                          redirected to the blog post page.
-                                    </Text>
-                              </Box>
-
                         </Stack>
 
 
