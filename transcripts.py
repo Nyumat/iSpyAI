@@ -1,6 +1,7 @@
 from youtube_transcript_api import YouTubeTranscriptApi
 from urllib.parse import urlparse, parse_qs
-import re
+import requests
+import json
   
 def export_youtube_transcript(url):
 
@@ -17,3 +18,28 @@ def export_youtube_transcript(url):
     #     f.write(spaceSeparated)
 
     return spaceSeparated
+
+def get_video_title_channel(url):
+
+    parsed_url = urlparse(url)
+    query_params = parse_qs(parsed_url.query)
+    video_id = query_params.get("v")
+
+    api_key = 'AIzaSyDTwgNfLqBARq-Lq7hDU6uu75NRjDIpI9U'
+    url = f'https://www.googleapis.com/youtube/v3/videos?id={video_id[0]}&key={api_key}&part=snippet'
+
+    response = requests.get(url)
+    response_data = json.loads(response.text)
+
+    if 'items' in response_data and len(response_data['items']) > 0:
+        video_title = response_data['items'][0]['snippet']['title']
+        channel_title = response_data['items'][0]['snippet']['channelTitle']
+        return (channel_title, video_title)
+
+    return "Video not found"
+
+# Example usage
+# url = "https://www.youtube.com/watch?v=vzNZrdimAYs"
+# video_title = get_youtube_video_title(url)
+# video_text = export_youtube_transcript(url)
+
