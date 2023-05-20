@@ -28,3 +28,6 @@ dist-ssr
 
 # Hide Youtube API Key
 config.py
+
+# Hide OpenAI API Key
+openai_api_key.txt

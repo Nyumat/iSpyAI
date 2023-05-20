@@ -1,6 +1,6 @@
+import os
 import datetime
 import hashlib
-import os
 import boto3
 from botocore.exceptions import ClientError
 import logging
@@ -101,5 +101,9 @@ def main():
     r.close()
 
 
-if __name__ == '__main__':
+# Import flask app from server.py
+from server import app
+
+if __name__ == "__main__":
     main()
+    app.run(debug=True)
