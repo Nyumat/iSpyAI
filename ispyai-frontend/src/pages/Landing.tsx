@@ -9,8 +9,11 @@ import {
       useColorModeValue,
       createIcon,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Landing() {
+      const navigate = useNavigate();
+
       return (
             <>
                   <Container maxW={'3xl'}>
@@ -21,14 +24,14 @@ export default function Landing() {
                               py={{ base: 20, md: 36 }}>
                               <Heading
                                     fontWeight={600}
-                                    fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
+                                    fontSize={{ base: '2xl', sm: '4xl', md: '7xl' }}
                                     lineHeight={'110%'}>
                                     Summarize your <br />
                                     <Text as={'span'} color={'green.400'}>
                                           favorite videos.
                                     </Text>
                               </Heading>
-                              <Text color={'gray.500'}>
+                              <Text color={'gray.500'} maxW={'3xl'} fontSize={{ base: 'md', lg: 'xl' }}>
                                     Welcome to iSpyAI! We are a video summarization service that
                                     allows you to summarize your favorite videos. We use the latest
                                     in AI technology to summarize your videos in a matter of
@@ -44,6 +47,7 @@ export default function Landing() {
                                           colorScheme={'green'}
                                           bg={'green.400'}
                                           rounded={'full'}
+                                          onClick={() => navigate('/generate')}
                                           px={6}
                                           _hover={{
                                                 bg: 'green.500',
@@ -69,7 +73,7 @@ export default function Landing() {
                                                 right={'-125px'}
                                                 top={'-15px'}
                                                 transform={'rotate(10deg)'}>
-                                                Starting at $15/mo
+                                                It's completely free!
                                           </Text>
                                     </Box>
                               </Stack>
