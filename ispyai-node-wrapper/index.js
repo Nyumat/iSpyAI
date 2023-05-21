@@ -67,8 +67,6 @@ app.post("/api", async (req, res) => {
       
       I want the blog post to be in markdown format. (.md) I also want the blog post to be short and concise.
 
-      The markdown should be in a code block.
-
       The Table of contents header should be in a h1 tag.
 
       Please make sure to include a table of contents and a headers for each section. 
