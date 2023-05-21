@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/exhaustive-deps */
 import ReactMarkdown from 'react-markdown'
 import { Box, Container, Heading, Stack, Text } from '@chakra-ui/react'
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer';
@@ -18,7 +20,7 @@ const Blog = () => {
       const contentNew = content?.split('\n');
 
       const markdown = `
-      ${contentNew.map((line: any) => {
+      ${contentNew.map((line) => {
             return `${line}\n`
       }).join('')}
       `
