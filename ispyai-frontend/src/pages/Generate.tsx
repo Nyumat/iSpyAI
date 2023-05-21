@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { submitJob } from '../redux/slices/SessionSlice';
+import { setBlog, setVideo, submitJob } from '../redux/slices/SessionSlice';
 import { AppDispatch } from '../redux/store/store';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -29,35 +29,46 @@ const Generate = () => {
       const handleGenerate = async () => {
             setLoading(true);
             await sendGenerateRequest();
-            setTimeout(() => {
-                  setLoading(false);
-                  naviagate(`/blog/${session.jobId}`);
-            }, 3000);
-            // await sendGenerateRequest();
+            dispatch(setVideo(url));
+            setLoading(false);
+            naviagate(`/blog/${session.userId}`);
       };
 
       const sendGenerateRequest = async () => {
-            const req = {
-                  "userId": session.userId,
-                  "videoUrl": url
+            try {
+                  const res = await axios.post("http://localhost:3000/api", {
+                        url: url
+                  });
+                  
+                  dispatch(setBlog(res.data));
+            } catch (error) {
+                  console.log(error);
             }
-            dispatch(submitJob(req));
       };
 
-      useEffect(() => {
-            const fetchJobStatus = async () => {
-                  if (!session.jobId) return;
-                  const res = await axios.get(`http://video-publi-18ljnttgnyky9-1470409612.us-west-2.elb.amazonaws.com/getJob/${session.jobId}`);
-                  if (res.data.status === "SUCCEEDED") {
-                        naviagate(`/blog/${session.jobId}`);
-                  } else {
-                        setTimeout(() => {
-                              fetchJobStatus();
-                        }, 5000);
-                  }
-            }
-            fetchJobStatus();
-      }, [session.jobId, naviagate]);
+      // const sendGenerateRequest = async () => {
+      //       const req = {
+      //             "userId": session.userId,
+      //             "videoUrl": url
+      //       }
+      //       dispatch(setVideo(url));
+      //       dispatch(submitJob(req));
+      // };
+
+      // useEffect(() => {
+      //       const fetchJobStatus = async () => {
+      //             if (!session.jobId) return;
+      //             const res = await axios.get(`http://video-publi-18ljnttgnyky9-1470409612.us-west-2.elb.amazonaws.com/getJob/${session.jobId}`);
+      //             if (res.data.status === "SUCCEEDED") {
+      //                   naviagate(`/blog/${session.jobId}`);
+      //             } else {
+      //                   setTimeout(() => {
+      //                         fetchJobStatus();
+      //                   }, 5000);
+      //             }
+      //       }
+      //       fetchJobStatus();
+      // }, [session.jobId, naviagate]);
 
 
 
