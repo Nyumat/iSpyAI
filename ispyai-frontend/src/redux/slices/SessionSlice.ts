@@ -8,6 +8,9 @@ const initialState = {
   jobProgress: "",
   jobResult: "",
   jobError: "",
+  url: "",
+  video: "",
+  blog: "",
 };
 
 export const submitJob = createAsyncThunk(
@@ -37,6 +40,15 @@ export const sessionSlice = createSlice({
     setSession: (state, action) => {
       state.userId = action.payload;
     },
+    setUrl: (state, action) => {
+      state.url = action.payload;
+    },
+    setVideo: (state, action) => {
+      state.video = action.payload;
+    },
+    setBlog: (state, action) => {
+      state.blog = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(submitJob.fulfilled, (state, action) => {
@@ -47,5 +59,7 @@ export const sessionSlice = createSlice({
     });
   },
 });
+
+export const { setSession, setUrl, setVideo, setBlog } = sessionSlice.actions;
 
 export default sessionSlice.reducer;
