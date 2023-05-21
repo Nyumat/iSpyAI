@@ -4,7 +4,7 @@ import tiktoken # Used to count tokens
 # Load OpenAI API key from file
 # with open("openai_api_key.txt", "r") as f:
 #     openai.api_key = f.read()
-openai.api_key = "OPENAI_KEY_HERE"
+openai.api_key = "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"
 
 # Limit on number of GPT3 tokens per request
 TOKEN_LIMIT = 2000
