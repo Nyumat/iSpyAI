@@ -40,11 +40,11 @@ http://localhost:5173
 
 2. Enter a Youtube URL and click submit
 
-[![Generate Screen](../iSpyAI/assets/generate.png)](../iSpyAI/assets/generate.png)
+[![Generate Screen](./assets/generate.png)](./assets/generate.png)
 
 
 3. Wait for the video to process
 
 > Once the video has been processed, you will be redirected to the blog post page. The blog post page will contain the video title, and the blog post content. There will also be any relevant images or code snippets that were generated from the video.
 
-[![Blog Post Screen](../iSpyAI/assets/blogpost.png)](../iSpyAI/assets/blogpost.png)
+[![Blog Post Screen](./assets/blogpost.png)](./assets/blogpost.png)
