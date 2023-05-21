@@ -1,9 +1,14 @@
-﻿using Amazon;
+﻿using System.Collections;
+using System.Security.Cryptography;
+using System.Text;
+using Amazon;
 using Amazon.Batch;
 using Amazon.Batch.Model;
 using Amazon.Runtime;
 using Amazon.Runtime.CredentialManagement;
 using ispyai_rest_api.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using StackExchange.Redis;
 using KeyValuePair = Amazon.Batch.Model.KeyValuePair;
 
@@ -29,7 +34,7 @@ public static class Program
         config.AddConsole();
     }).CreateLogger("ispyai_rest_api");
     
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +42,17 @@ public static class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        
+        // Configure CORS
+        builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy =>
+            {
+                policy.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
+        });
 
         var app = builder.Build();
 
@@ -48,6 +64,19 @@ public static class Program
         // }
 
         app.UseHttpsRedirection();
+        
+        // Enable CORS
+        app.UseCors();
+        
+        // init redis connection
+        var configuration = new ConfigurationOptions
+        {
+            EndPoints = { "redis-18674.c273.us-east-1-2.ec2.cloud.redislabs.com:18674" }, // Replace with your Redis host and port
+            Password = "MNSwDR1UOlq20ucYUhfoaoW5OSHIuEnY", // Replace with your Redis password
+            User = "default" // Replace with your Redis username if applicable
+        };
+        await using var redis = await ConnectionMultiplexer.ConnectAsync(configuration);
+        var database = redis.GetDatabase();
 
         // this endpoint is for health check only
         app.MapGet("/", () =>
@@ -60,7 +89,11 @@ public static class Program
             try
             {
                 // create hash of videoUrl
-                var videoUrlHash = input.videoUrl.GetHashCode();
+                string videoUrl = input.videoUrl;
+                SHA256 sha256 = SHA256.Create();
+                byte[] bytes = Encoding.UTF8.GetBytes(videoUrl);
+                byte[] hashBytes = sha256.ComputeHash(bytes);
+                string videoUrlHash = BitConverter.ToString(hashBytes).Replace("-", string.Empty).ToLower();
                 
                 var response = await batchClient.SubmitJobAsync(new SubmitJobRequest 
                 {
@@ -84,6 +117,11 @@ public static class Program
                             {
                                 Name = "videoUrl",
                                 Value = input.videoUrl
+                            },
+                            new KeyValuePair
+                            {
+                                Name = "videoUrlHash",
+                                Value = videoUrlHash
                             }
                         }
                     }
@@ -92,7 +130,29 @@ public static class Program
                 var jobId = response.JobId;
                 var jobName = response.JobName;
                 
-                return Results.Created($"{jobId}, {jobName}", response);
+                // save userId-videoUrlHash to redis
+                var redisKey = $"{input.userId}-{videoUrlHash}";
+                await database.HashSetAsync(redisKey, new HashEntry[] {
+                    new HashEntry("jobId", jobId),
+                    new HashEntry("jobName", jobName),
+                    new HashEntry("videoUrlHash", videoUrlHash),
+                    new HashEntry("videoUrl", input.videoUrl),
+                    new HashEntry("userId", input.userId)
+                });
+                // set expiration to 1 hour
+                await database.KeyExpireAsync(redisKey, TimeSpan.FromHours(1));
+                
+                var json = new 
+                {
+                    jobId = jobId,
+                    jobName = jobName,
+                    redisKey = redisKey,
+                    videoUrlHash = videoUrlHash,
+                    videoUrl = input.videoUrl,
+                    userId = input.userId
+                };
+
+                return Results.Created($"{jobId}", json);
             }
             catch (Exception e)
             {
@@ -153,37 +213,44 @@ public static class Program
             }
         });
 
-        app.MapGet("/getAllKeyValuePairs", async () =>
+        app.MapGet("/getJobEntries/{userId}", async (string userId) =>
         {
-            var configuration = new ConfigurationOptions
+            // get all redis keys and data for userId
+            // var redisKeys = database.Execute("return redis.call('keys', ARGV[1])", new RedisKey[] { $"{userId}-*" });
+            var keys = (RedisKey[]) database.Execute("KEYS", $"{userId}-*")!;
+            
+            var data = new List<JobEntry>();
+            
+            // Iterate over the key results and retrieve their hash values
+            foreach (var keyResult in keys)
             {
-                EndPoints = { "redis-18674.c273.us-east-1-2.ec2.cloud.redislabs.com:18674" }, // Replace with your Redis host and port
-                Password = "MNSwDR1UOlq20ucYUhfoaoW5OSHIuEnY", // Replace with your Redis password
-                User = "default" // Replace with your Redis username if applicable
-            };
+                var key = keyResult.ToString();
+                var hashEntries = database.HashGetAll(key);
+                
+                // var hashEntriesToJsonString = JsonConvert.SerializeObject(hashEntries);
+                // var hashEntriesToJson = JsonConvert.DeserializeObject(hashEntriesToJsonString);
+                // // get first element of hashEntriesToJson
+                // var hashEntriesToJsonFirstElement = ((JArray) hashEntriesToJson!).First;
 
-            await using var redis = await ConnectionMultiplexer.ConnectAsync(configuration);
+                var items = new Dictionary<string, string>();
 
-            var keys = redis.GetServer(configuration.EndPoints[0]).Keys();
-
-            // convert keys to json
-            var json = new
-            {
-                keys = keys.Select(key => key.ToString())
-            };
-
-            return Results.Ok(json);
-
-            // print all keys
-            // foreach (var key in keys)
-            // {
-            //     Console.WriteLine(key);
-            // }
-            //     
-            // // foreach (var key in keys)
-            // // {
-            // //     var value = database.HashGet(key, "value");
-            // // }
+                Logger.LogInformation($"Hash values for key: {key}");
+                foreach (HashEntry entry in hashEntries)
+                {
+                    Logger.LogInformation($"Field: {entry.Name}, Value: {entry.Value}");
+                    
+                    // set add this as a property to the asdf object
+                    items[entry.Name.ToString()] = entry.Value.ToString();
+                }
+                
+                data.Add(new JobEntry
+                {
+                    key = key,
+                    value = items
+                });
+            }
+            
+            return Results.Ok(data);
         });
 
         app.Run();

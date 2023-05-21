@@ -2,7 +2,6 @@ from youtube_transcript_api import YouTubeTranscriptApi
 from urllib.parse import urlparse, parse_qs
 import requests
 import json
-import config
   
 def export_youtube_transcript(url):
 
@@ -26,7 +25,7 @@ def get_video_title_channel(url):
     query_params = parse_qs(parsed_url.query)
     video_id = query_params.get("v")
 
-    api_key = config.YOUTUBE_API_KEY
+    api_key = "YOUTUBE_API_KEY"
     url = f'https://www.googleapis.com/youtube/v3/videos?id={video_id[0]}&key={api_key}&part=snippet'
 
     response = requests.get(url)
