@@ -17,7 +17,7 @@ def main():
     videoUrl = os.environ.get('videoUrl')
     videoUrlHash = os.environ.get('videoUrlHash')
     # userId = "testUserId"
-    # videoUrl = "https://www.youtube.com/watch?v=K2ErbkzV2nU&ab_channel=InsiderFood"
+    # videoUrl = "https://www.youtube.com/watch?v=4bjDrOleJgI&ab_channel=DailyDoseOfInternet"
     # videoUrlHash = "testVideoUrlHash"
 
     print(f"env variable userId: {userId}")
@@ -36,8 +36,9 @@ def main():
     # print(f"title: {title}")
 
     # 2. generate blog post from video transcript and save to content
-    # content = generateBlog(transcript)
-    content = "This is a test blog post.\nIt is alive!"
+    content = generateBlog(transcript)
+    # content = "This is a test blog post.\nIt is alive!"
+    print(f"content: {content[0:100]}...")
 
     # save blog to s3
     presigned_url = saveBlogToS3(videoUrlHash, content)

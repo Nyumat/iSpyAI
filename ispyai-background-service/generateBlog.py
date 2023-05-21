@@ -1,12 +1,10 @@
 import openai
 import tiktoken # Used to count tokens
-# Used to get transcripts for videos
-from transcripts import export_youtube_transcript, get_video_title_channel
 
 # Load OpenAI API key from file
 # with open("openai_api_key.txt", "r") as f:
 #     openai.api_key = f.read()
-openai.api_key = ""
+openai.api_key = "OPENAI_KEY_HERE"
 
 # Limit on number of GPT3 tokens per request
 TOKEN_LIMIT = 2000
@@ -25,7 +23,7 @@ def generateBlog(transcript):
     print("-- Token count: {} / {}".format(token_count, TOKEN_LIMIT))
     if token_count > TOKEN_LIMIT:
         return "Error: Transcript too long. Please use a shorter video.", 400
-    print(prmt)
+    # print(prmt)
     response = openai.Completion.create(
         model="text-davinci-003",
         prompt=prmt,

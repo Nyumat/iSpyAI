@@ -7,5 +7,5 @@ services:
             - ~/.aws/:/root/.aws:ro
         environment:
             - userId=myUserId
-            - videoUrl=https://www.youtube.com/watch?v=K2ErbkzV2nU&ab_channel=InsiderFood
+            - videoUrl=https://www.youtube.com/watch?v=4bjDrOleJgI&ab_channel=DailyDoseOfInternet
             - videoUrlHash=asdfasdf
