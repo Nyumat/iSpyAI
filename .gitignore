@@ -11,6 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
+ispyai-background-service/__pycache__
 
 # Editor directories and files
 .vscode/*
@@ -31,3 +32,4 @@ config.py
 
 # Hide OpenAI API Key
 openai_api_key.txt
+ispyai-node-wrapper/.env
