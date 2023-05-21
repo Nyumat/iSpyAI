@@ -89,7 +89,7 @@ public static class Program
             try
             {
                 // create hash of videoUrl
-                string videoUrl = "your_video_url";
+                string videoUrl = input.videoUrl;
                 SHA256 sha256 = SHA256.Create();
                 byte[] bytes = Encoding.UTF8.GetBytes(videoUrl);
                 byte[] hashBytes = sha256.ComputeHash(bytes);
