@@ -116,6 +116,7 @@ app.post("/api", async (req, res) => {
 });
 
 app.use("*", async (req, res) => {
+
   console.log("========REQUEST RECEIVED========");
   console.log(`REQUEST ROUTE:  ${JSON.stringify(req.originalUrl, null, "  ")}`);
   console.log(`REQUEST METHOD:  ${JSON.stringify(req.method, null, "  ")}`);
