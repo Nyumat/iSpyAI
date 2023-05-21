@@ -227,22 +227,27 @@ public static class Program
                 var key = keyResult.ToString();
                 var hashEntries = database.HashGetAll(key);
                 
-                var hashEntriesToJsonString = JsonConvert.SerializeObject(hashEntries);
+                // var hashEntriesToJsonString = JsonConvert.SerializeObject(hashEntries);
                 // var hashEntriesToJson = JsonConvert.DeserializeObject(hashEntriesToJsonString);
                 // // get first element of hashEntriesToJson
                 // var hashEntriesToJsonFirstElement = ((JArray) hashEntriesToJson!).First;
-                
-                data.Add(new JobEntry
-                {
-                    key = key,
-                    value = hashEntriesToJsonString
-                });
+
+                var items = new Dictionary<string, string>();
 
                 Logger.LogInformation($"Hash values for key: {key}");
                 foreach (HashEntry entry in hashEntries)
                 {
                     Logger.LogInformation($"Field: {entry.Name}, Value: {entry.Value}");
+                    
+                    // set add this as a property to the asdf object
+                    items[entry.Name.ToString()] = entry.Value.ToString();
                 }
+                
+                data.Add(new JobEntry
+                {
+                    key = key,
+                    value = items
+                });
             }
             
             return Results.Ok(data);
