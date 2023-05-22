@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Box, Container, Heading, Stack, Text } from '@chakra-ui/react';
-import { ExternalLinkIcon } from '@chakra-ui/icons';
+import { useSelector } from 'react-redux';
+import { Button, Grid, Heading, IconButton, Text } from '@chakra-ui/react';
+import { DownloadIcon, ExternalLinkIcon } from '@chakra-ui/icons';
+import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react'
 
-interface Item {
+export interface Item {
 	videoUrl: string;
 	presignedUrl: string | null;
 	jobId: string;
@@ -42,51 +45,34 @@ const List: React.FC = () => {
 	}, []);
 
 	return (
-		<div>
-			<h1>Blog Posts</h1>
-			<ul>
-				{itemList.map((item) => (
-					<li key={item.jobId}>
-						<a href={item.videoUrl} target="_blank">
-							<Text
-								fontWeight={700}
-								color={'green.400'}
-								textDecoration="underline"
-							>
+		<Grid gap={6} width='100%'>
+			<Heading size='lg' marginBottom='10px' m="0 auto" my={12}>
+				Your Blog Posts ({itemList.length})
+			</Heading>
+			{
+				itemList.map((item) => (
+					<Card key={item.jobId} marginBottom='10px' m="0 auto" maxW="320px">
+						<CardHeader>
+							<Heading size='md'>{item.jobId}</Heading>
+						</CardHeader>
+						<CardBody>
+							<Text fontSize='xl' marginBottom='10px' as='a' cursor={'pointer'} onClick={() => window.open(item.videoUrl, '_blank')}>
 								{item.videoUrl}
 								<ExternalLinkIcon boxSize={4} marginLeft="1" />
 							</Text>
-						</a>
+						</CardBody>
 
-						{item.presignedUrl != null ? (
-							<a href={item.presignedUrl} download>
-								<button
-									style={{
-										marginLeft: '10px',
-										padding: '10px',
-										background: 'green'
-									}}
-								>
-									Download
-								</button>
-							</a>
-						) : (
-							<button
-								style={{
-									marginLeft: '10px',
-									padding: '10px',
-									background: 'gray',
-									cursor: 'not-allowed'
-								}}
-								disabled
-							>
-								Processing...
-							</button>
-						)}
-					</li>
-				))}
-			</ul>
-		</div>
+						<CardFooter>
+							{item.presignedUrl != null ? (
+								<IconButton aria-label="Download" icon={<DownloadIcon />} onClick={() => window.open(item.presignedUrl, '_blank')} />
+							) : (
+								<Button disabled>Processing...</Button>
+							)}
+						</CardFooter>
+					</Card>
+				))
+			}
+		</Grid >
 	);
 };
 
