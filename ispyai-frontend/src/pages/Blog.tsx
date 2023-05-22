@@ -115,7 +115,7 @@ const Blog = () => {
 		console.log(jobId);
 
 		// eslint-disable-next-line prefer-const
-		let intervalId: number;
+		let intervalId;
 
 
 		if (showBlog) {
