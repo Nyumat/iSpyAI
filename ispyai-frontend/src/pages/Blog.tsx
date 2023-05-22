@@ -3,7 +3,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import ReactMarkdown from 'react-markdown';
-import { Box, Button, Center, Container, Flex, Heading, Stack, Text, useColorMode, useColorModeValue, useMediaQuery } from '@chakra-ui/react';
+import {
+	Box,
+	Button,
+	Center,
+	Container,
+	Flex,
+	Heading,
+	Stack,
+	Text,
+	useColorMode,
+	useColorModeValue,
+	useMediaQuery
+} from '@chakra-ui/react';
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer';
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
@@ -13,7 +25,6 @@ import { Rings } from 'react-loader-spinner';
 import { motion } from 'framer-motion';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Item } from './List';
-
 
 const Blog = () => {
 	const [title, setTitle] = useState('');
@@ -31,7 +42,12 @@ const Blog = () => {
 		<motion.span
 			key={i}
 			animate={{ opacity: [1, 0], y: [0, -10], x: [0, 10] }}
-			transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 0.5, ease: 'linear' }}
+			transition={{
+				duration: 1.5,
+				repeat: Infinity,
+				repeatDelay: 0.5,
+				ease: 'linear'
+			}}
 		>
 			{dot}
 		</motion.span>
@@ -93,7 +109,6 @@ const Blog = () => {
 					setItem(item);
 					setShowBlog(true);
 				}
-				
 			})
 			.catch((error) => console.error(error));
 	};
@@ -116,7 +131,6 @@ const Blog = () => {
 
 		// eslint-disable-next-line prefer-const
 		let intervalId;
-
 
 		if (showBlog) {
 			axios.get(item.presignedUrl).then((response) => {
@@ -148,7 +162,7 @@ const Blog = () => {
 		};
 	}, [showBlog]);
 
-	console.log(markdown)
+	console.log(markdown);
 
 	return (
 		<Container maxW={{ base: 'xl', md: '2xl' }} mt={10}>
@@ -183,26 +197,59 @@ const Blog = () => {
 							Your blog post is ready!
 						</Heading>
 						<Center>
-							<Box w="100%" p={4} color={useColorModeValue('gray.800', 'white')} mt={10} display={{ md: 'flex' }} alignItems={{ md: 'center' }} flexDirection={{ md: 'row' }}>
-
-								<Flex justifyContent="center" alignItems="center" mb={4} flexDirection={"column"} mr={4}>
-
+							<Box
+								w="100%"
+								p={4}
+								color={useColorModeValue('gray.800', 'white')}
+								mt={10}
+								display={{ md: 'flex' }}
+								alignItems={{ md: 'center' }}
+								flexDirection={{ md: 'row' }}
+							>
+								<Flex
+									justifyContent="center"
+									alignItems="center"
+									mb={4}
+									flexDirection={'column'}
+									mr={4}
+								>
 									<Heading as="h2" size="md" maxW="sm">
-										Click this button to preview your blog post.
+										Click this button to preview your blog
+										post.
 									</Heading>
-									<Button mt={4} colorScheme="green" onClick={handlePreivew}>
+									<Button
+										mt={4}
+										colorScheme="green"
+										onClick={handlePreivew}
+									>
 										Preview Blog Post
 									</Button>
 								</Flex>
-								<Text fontSize="3xl" mt={2} mb={4} opacity={0.7}>
+								<Text
+									fontSize="3xl"
+									mt={2}
+									mb={4}
+									opacity={0.7}
+								>
 									OR
 								</Text>
 
-								<Flex justifyContent="center" alignItems="center" mb={4} flexDirection={"column"} ml={4}>
+								<Flex
+									justifyContent="center"
+									alignItems="center"
+									mb={4}
+									flexDirection={'column'}
+									ml={4}
+								>
 									<Heading as="h2" size="md" maxW="sm">
-										Click this button to view your lists of blog posts.
+										Click this button to view your lists of
+										blog posts.
 									</Heading>
-									<Button mt={4} colorScheme="green" onClick={handleList}>
+									<Button
+										mt={4}
+										colorScheme="green"
+										onClick={handleList}
+									>
 										Go To List
 									</Button>
 								</Flex>
@@ -211,11 +258,23 @@ const Blog = () => {
 					</>
 				) : jobStatus == 'FAILED' ? (
 					<Center>
-						<Box w="100%" p={4} color={useColorModeValue('gray.800', 'white')} mt={10} display={{ md: 'flex' }} alignItems={{ md: 'center' }} flexDirection={{ md: 'column' }}>
+						<Box
+							w="100%"
+							p={4}
+							color={useColorModeValue('gray.800', 'white')}
+							mt={10}
+							display={{ md: 'flex' }}
+							alignItems={{ md: 'center' }}
+							flexDirection={{ md: 'column' }}
+						>
 							<Heading as="h1" size="3xl" mb={12}>
 								Your video failed to process.
 							</Heading>
-							<Button mt={4} colorScheme="green" onClick={() => navigate(-1)}>
+							<Button
+								mt={4}
+								colorScheme="green"
+								onClick={() => navigate(-1)}
+							>
 								Go Back
 							</Button>
 						</Box>
@@ -233,18 +292,24 @@ const Blog = () => {
 							<Rings
 								height={isMobile ? '70vh' : '80vh'}
 								width={isMobile ? '70vw' : '80vw'}
-								color={`${colorMode === "dark" ? 'MediumSpringGreen' : 'MediumSeaGreen'}`}
-								radius='6'
+								color={`${
+									colorMode === 'dark'
+										? 'MediumSpringGreen'
+										: 'MediumSeaGreen'
+								}`}
+								radius="6"
 								wrapperStyle={{
-									opacity: `${colorMode === "dark" ? '0.1' : '0.8'}`,
+									opacity: `${
+										colorMode === 'dark' ? '0.1' : '0.8'
+									}`,
 									position: 'absolute',
 									transform: 'translateY(75%)',
-									bottom: '0',
+									bottom: '0'
 								}}
 								visible={true}
-								ariaLabel='rings-loading'
+								ariaLabel="rings-loading"
 							/>
-							<Text fontSize='4xl' fontWeight='bold'>
+							<Text fontSize="4xl" fontWeight="bold">
 								We are processing your video
 								{dots}
 							</Text>

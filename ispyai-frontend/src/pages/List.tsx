@@ -4,10 +4,11 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Button, Grid, Heading, IconButton, Text } from '@chakra-ui/react';
 import { DownloadIcon, ExternalLinkIcon } from '@chakra-ui/icons';
-import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react'
+import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react';
 
 export interface Item {
 	videoUrl: string;
+	videoTitle: string;
 	presignedUrl: string | null;
 	jobId: string;
 }
@@ -26,6 +27,7 @@ const List: React.FC = () => {
 				.then((data) => {
 					const items: Item[] = data.map((item: any) => ({
 						videoUrl: item.value.videoUrl,
+						videoTitle: item.value.videoTitle,
 						presignedUrl: item.value.presignedUrl,
 						jobId: item.value.jobId
 					}));
@@ -45,34 +47,39 @@ const List: React.FC = () => {
 	}, []);
 
 	return (
-		<Grid gap={6} width='100%'>
-			<Heading size='lg' marginBottom='10px' m="0 auto" my={12}>
+		<Grid gap={6} width="100%">
+			<Heading size="lg" marginBottom="10px" m="0 auto" my={12}>
 				Your Blog Posts ({itemList.length})
 			</Heading>
-			{
-				itemList.map((item) => (
-					<Card key={item.jobId} marginBottom='10px' m="0 auto" maxW="320px">
-						<CardHeader>
-							<Heading size='md'>{item.jobId}</Heading>
-						</CardHeader>
-						<CardBody>
-							<Text fontSize='xl' marginBottom='10px' as='a' cursor={'pointer'} onClick={() => window.open(item.videoUrl, '_blank')}>
-								{item.videoUrl}
+			{itemList.map((item) => (
+				<Card
+					key={item.jobId}
+					marginBottom="10px"
+					m="0 auto"
+					width="400px"
+				>
+					<CardHeader>
+						<a href={`/blog/${item.jobId}`} target="_blank">
+							<Heading size="md" textDecoration="underline">
+								{item.videoTitle}
 								<ExternalLinkIcon boxSize={4} marginLeft="1" />
-							</Text>
-						</CardBody>
+							</Heading>
+						</a>
+					</CardHeader>
 
-						<CardFooter>
-							{item.presignedUrl != null ? (
-								<IconButton aria-label="Download" icon={<DownloadIcon />} onClick={() => window.open(item.presignedUrl, '_blank')} />
-							) : (
-								<Button disabled>Processing...</Button>
-							)}
-						</CardFooter>
-					</Card>
-				))
-			}
-		</Grid >
+					<CardFooter>
+						{item.presignedUrl != null ? (
+							<Button>
+								{'Download blog'}
+								<DownloadIcon style={{ marginLeft: '8px' }} />
+							</Button>
+						) : (
+							<Button disabled>Processing...</Button>
+						)}
+					</CardFooter>
+				</Card>
+			))}
+		</Grid>
 	);
 };
 
