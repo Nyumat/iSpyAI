@@ -273,9 +273,9 @@ const Blog = () => {
 							<Button
 								mt={4}
 								colorScheme="green"
-								onClick={() => navigate(-1)}
+								onClick={() => navigate('/')}
 							>
-								Go Back
+								Go Home
 							</Button>
 						</Box>
 					</Center>

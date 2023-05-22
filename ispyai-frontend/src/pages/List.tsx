@@ -2,9 +2,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Button, Grid, Heading, IconButton, Text } from '@chakra-ui/react';
+import { Button, Grid, Heading } from '@chakra-ui/react';
 import { DownloadIcon, ExternalLinkIcon } from '@chakra-ui/icons';
-import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react';
+import { Card, CardHeader, CardFooter } from '@chakra-ui/react';
 
 export interface Item {
 	videoUrl: string;
