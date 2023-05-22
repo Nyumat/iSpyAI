@@ -170,7 +170,7 @@ const Blog = () => {
 				spacing={{ base: 8, md: 14 }}
 				py={{ base: 12, md: 26 }}
 			>
-				<a href={videoUrl} target="_blank">
+				<a href={videoUrl} target="_blank" style={{ zIndex: '9999' }}>
 					<Heading
 						fontWeight={600}
 						fontSize={{ base: 'lg', sm: 'md', md: '3xl' }}

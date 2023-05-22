@@ -67,10 +67,14 @@ const List: React.FC = () => {
 
 					<CardFooter>
 						{item.presignedUrl != null ? (
-							<Button>
-								{'Download blog'}
-								<DownloadIcon style={{ marginLeft: '8px' }} />
-							</Button>
+							<a href={item.presignedUrl} download>
+								<Button>
+									{'Download blog'}
+									<DownloadIcon
+										style={{ marginLeft: '8px' }}
+									/>
+								</Button>
+							</a>
 						) : (
 							<Button disabled>Processing...</Button>
 						)}
