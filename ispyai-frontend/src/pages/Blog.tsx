@@ -77,7 +77,7 @@ const Blog = () => {
 	const getJobStatus = async (jobId) => {
 		try {
 			const job = await axios.get(
-				`http://video-publi-18ljnttgnyky9-1470409612.us-west-2.elb.amazonaws.com/getJob/${jobId}`
+				`https://video-publi-18ljnttgnyky9-1470409612.us-west-2.elb.amazonaws.com/getJob/${jobId}`
 			);
 			console.log(job.data);
 			jobStatusRef.current = job.data.status; // Update the jobStatusRef value
@@ -93,7 +93,7 @@ const Blog = () => {
 
 	const handlePreivew = async () => {
 		fetch(
-			`http://video-publi-18ljnttgnyky9-1470409612.us-west-2.elb.amazonaws.com/getJobEntries/${session.blog.userId}`
+			`https://video-publi-18ljnttgnyky9-1470409612.us-west-2.elb.amazonaws.com/getJobEntries/${session.blog.userId}`
 		)
 			.then((response) => response.json())
 			.then((data) => {

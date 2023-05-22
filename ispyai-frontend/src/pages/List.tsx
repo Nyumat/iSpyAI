@@ -21,7 +21,7 @@ const List: React.FC = () => {
 		// Fetch data from the API
 		const fetchData = () => {
 			fetch(
-				`http://video-publi-18ljnttgnyky9-1470409612.us-west-2.elb.amazonaws.com/getJobEntries/${session.userId}`
+				`https://video-publi-18ljnttgnyky9-1470409612.us-west-2.elb.amazonaws.com/getJobEntries/${session.userId}`
 			)
 				.then((response) => response.json())
 				.then((data) => {
