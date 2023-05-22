@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
-  userId: "123",
+  userId: `user-${Math.floor(Math.random() * 1000000)}`,
   jobId: null,
   jobStatus: "",
   jobProgress: "",
@@ -11,6 +11,7 @@ const initialState = {
   url: "",
   video: "",
   blog: "",
+  videoTitle: "",
 };
 
 export const submitJob = createAsyncThunk(
@@ -48,6 +49,9 @@ export const sessionSlice = createSlice({
     },
     setBlog: (state, action) => {
       state.blog = action.payload;
+    },
+    setVideoTitle: (state, action) => {
+      state.videoTitle = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -60,6 +64,6 @@ export const sessionSlice = createSlice({
   },
 });
 
-export const { setSession, setUrl, setVideo, setBlog } = sessionSlice.actions;
+export const { setSession, setUrl, setVideo, setBlog, setVideoTitle } = sessionSlice.actions;
 
 export default sessionSlice.reducer;

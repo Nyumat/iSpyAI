@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
 	Box,
 	Heading,
@@ -9,16 +10,15 @@ import {
 	Progress,
 	useColorMode
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setBlog, setVideo, submitJob } from '../redux/slices/SessionSlice';
+import { setBlog, setVideo } from '../redux/slices/SessionSlice';
 import { AppDispatch } from '../redux/store/store';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const Generate = () => {
 	const [loading, setLoading] = useState(false);
-	const [loadingProgress, setLoadingProgress] = useState(0);
 	const [url, setUrl] = useState('');
 	const { colorMode } = useColorMode();
 	const dispatch = useDispatch<AppDispatch>();
