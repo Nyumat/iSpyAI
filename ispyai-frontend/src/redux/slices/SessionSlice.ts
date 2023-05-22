@@ -19,7 +19,7 @@ export const submitJob = createAsyncThunk(
 	async (values: any, { rejectWithValue }) => {
 		try {
 			const response = await axios.post(
-				'https://video-publi-18ljnttgnyky9-1470409612.us-west-2.elb.amazonaws.com/submitJob',
+				'https://ispyai.osuapp.club/submitJob',
 				values,
 				{
 					headers: {

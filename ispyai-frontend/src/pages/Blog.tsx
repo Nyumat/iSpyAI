@@ -77,7 +77,7 @@ const Blog = () => {
 	const getJobStatus = async (jobId) => {
 		try {
 			const job = await axios.get(
-				`https://video-publi-18ljnttgnyky9-1470409612.us-west-2.elb.amazonaws.com/getJob/${jobId}`
+				`https://ispyai.osuapp.club/getJob/${jobId}`
 			);
 			console.log(job.data);
 			jobStatusRef.current = job.data.status; // Update the jobStatusRef value
@@ -92,9 +92,7 @@ const Blog = () => {
 	}
 
 	const handlePreivew = async () => {
-		fetch(
-			`https://video-publi-18ljnttgnyky9-1470409612.us-west-2.elb.amazonaws.com/getJobEntries/${session.blog.userId}`
-		)
+		fetch(`https://ispyai.osuapp.club/getJobEntries/${session.blog.userId}`)
 			.then((response) => response.json())
 			.then((data) => {
 				const items: Item[] = data.map((item: any) => ({

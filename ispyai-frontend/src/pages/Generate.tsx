@@ -36,7 +36,7 @@ const Generate = () => {
 	const sendGenerateRequest = async () => {
 		try {
 			const res = await axios.post(
-				'https://video-publi-18ljnttgnyky9-1470409612.us-west-2.elb.amazonaws.com/submitJob',
+				'https://ispyai.osuapp.club/submitJob',
 				{
 					userId: session.userId,
 					videoUrl: url
@@ -65,7 +65,7 @@ const Generate = () => {
 	// useEffect(() => {
 	//       const fetchJobStatus = async () => {
 	//             if (!session.jobId) return;
-	//             const res = await axios.get(`https://video-publi-18ljnttgnyky9-1470409612.us-west-2.elb.amazonaws.com/getJob/${session.jobId}`);
+	//             const res = await axios.get(`https://ispyai.osuapp.club/getJob/${session.jobId}`);
 	//             if (res.data.status === "SUCCEEDED") {
 	//                   naviagate(`/blog/${session.jobId}`);
 	//             } else {

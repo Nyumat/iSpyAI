@@ -20,9 +20,7 @@ const List: React.FC = () => {
 	useEffect(() => {
 		// Fetch data from the API
 		const fetchData = () => {
-			fetch(
-				`https://video-publi-18ljnttgnyky9-1470409612.us-west-2.elb.amazonaws.com/getJobEntries/${session.userId}`
-			)
+			fetch(`https://ispyai.osuapp.club/getJobEntries/${session.userId}`)
 				.then((response) => response.json())
 				.then((data) => {
 					const items: Item[] = data.map((item: any) => ({
