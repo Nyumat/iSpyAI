@@ -130,6 +130,15 @@ public static class Program
                 var jobId = response.JobId;
                 var jobName = response.JobName;
                 
+                // get video title by making http request
+                string videoId = input.videoUrl.Split("https://")[1];
+                string url = $"https://www.youtube.com/oembed?url={videoId}&format=json";
+                var client = new HttpClient();
+                var httpResponse = await client.GetAsync(url);
+                // get json key title
+                var titleJson = await httpResponse.Content.ReadAsStringAsync();
+                var videoTitle = JObject.Parse(titleJson)["title"]?.ToString();
+                
                 // save userId-videoUrlHash to redis
                 var redisKey = $"{input.userId}-{videoUrlHash}";
                 await database.HashSetAsync(redisKey, new HashEntry[] {
@@ -137,6 +146,7 @@ public static class Program
                     new HashEntry("jobName", jobName),
                     new HashEntry("videoUrlHash", videoUrlHash),
                     new HashEntry("videoUrl", input.videoUrl),
+                    new HashEntry("videoTitle", videoTitle),
                     new HashEntry("userId", input.userId)
                 });
                 // set expiration to 1 hour
@@ -144,11 +154,12 @@ public static class Program
                 
                 var json = new 
                 {
+                    redisKey = redisKey,
                     jobId = jobId,
                     jobName = jobName,
-                    redisKey = redisKey,
                     videoUrlHash = videoUrlHash,
                     videoUrl = input.videoUrl,
+                    videoTitle = videoTitle,
                     userId = input.userId
                 };
 
