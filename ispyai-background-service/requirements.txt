@@ -1,6 +1,6 @@
 boto3==1.18.40
 botocore==1.21.40
 redis==4.5.5
-youtube-transcript-api
-openai
-tiktoken
+youtube-transcript-api==0.6.0
+openai==0.27.7
+tiktoken==0.4.0
